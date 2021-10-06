@@ -4,6 +4,7 @@ cd src/aws/
 ./build.sh
 
 cd ../../tests/aws/
+go mod tidy
 go test -v -timeout 30m
 
 cd ../../
