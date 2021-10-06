@@ -5,19 +5,15 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/pinger/go-multicloud-deploy/src/function/v2"
 )
 
-type Event struct {
-	ShouldFail bool   `json:"ShouldFail"`
-	Echo       string `json:"Echo"`
-}
-
 // Fails if ShouldFail is `true`, otherwise echos the input.
-func HandleRequest(ctx context.Context, evnt Event) (string, error) {
-	if evnt.ShouldFail {
+func HandleRequest(ctx context.Context, evnt function.Event) (string, error) {
+	if evnt.Code != 0 {
 		return "", fmt.Errorf("Failed to handle %#v", evnt)
 	}
-	return evnt.Echo, nil
+	return evnt.Message, nil
 }
 
 func main() {
