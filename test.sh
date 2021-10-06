@@ -1,10 +1,10 @@
 #!/bin/bash
 
-cd src/
-go build -o lambda lambda.go
+cd src/aws/
+./build.sh
 
-cd ../tests/aws/
+cd ../../tests/aws/
 go test -v -timeout 30m
 
 cd ../../
-rm src/lambda
+rm -f src/bin/main

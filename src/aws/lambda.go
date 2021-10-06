@@ -10,7 +10,7 @@ import (
 
 // Fails if ShouldFail is `true`, otherwise echos the input.
 func HandleRequest(ctx context.Context, evnt function.Event) (string, error) {
-	if evnt.Code != 0 {
+	if evnt.Code == 0 {
 		return "", fmt.Errorf("Failed to handle %#v", evnt)
 	}
 	return evnt.Message, nil

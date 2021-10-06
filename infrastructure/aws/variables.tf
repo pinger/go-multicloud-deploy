@@ -13,10 +13,12 @@
 variable "region" {
   description = "The AWS region to deploy to"
   type        = string
+  default     = "eu-west-1"
 }
 
 variable "function_name" {
   description = "The name of the function to provision"
+  default     = "bugoga"
 }
 # ---------------------------------------------------------------------------------------------------------------------
 # OPTIONAL PARAMETERS

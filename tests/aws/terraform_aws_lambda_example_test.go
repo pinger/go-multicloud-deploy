@@ -10,6 +10,8 @@ import (
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/pinger/go-multicloud-deploy/src/function/v2"
 )
 
 // An example of how to test the Terraform module in examples/terraform-aws-lambda-example using Terratest.
@@ -47,13 +49,13 @@ func TestTerraformAwsLambdaExample(t *testing.T) {
 	terraform.InitAndApply(t, terraformOptions)
 
 	// Invoke the function, so we can test its output
-	response := aws.InvokeFunction(t, awsRegion, functionName, ExampleFunctionPayload{ShouldFail: false, Echo: "hi!"})
+	response := aws.InvokeFunction(t, awsRegion, functionName, function.Event{Code: 123, Message: "hi!"})
 
 	// This function just echos it's input as a JSON string when `ShouldFail` is `false``
 	assert.Equal(t, `"hi!"`, string(response))
 
 	// Invoke the function, this time causing it to error and capturing the error
-	_, err := aws.InvokeFunctionE(t, awsRegion, functionName, ExampleFunctionPayload{ShouldFail: true, Echo: "hi!"})
+	_, err := aws.InvokeFunctionE(t, awsRegion, functionName, function.Event{Code: 0, Message: "hi!"})
 
 	// Function-specific errors have their own special return
 	functionError, ok := err.(*aws.FunctionError)
@@ -116,7 +118,7 @@ func TestTerraformAwsLambdaWithParamsExample(t *testing.T) {
 	invocationType = aws.InvocationTypeRequestResponse
 	input = &aws.LambdaOptions{
 		InvocationType: &invocationType,
-		Payload:        ExampleFunctionPayload{ShouldFail: true, Echo: "hi!"},
+		Payload:        function.Event{Code: 0, Message: "hi!"},
 	}
 	out, err := aws.InvokeFunctionWithParamsE(t, awsRegion, functionName, input)
 
@@ -131,14 +133,9 @@ func TestTerraformAwsLambdaWithParamsExample(t *testing.T) {
 	invocationType = "Event"
 	input = &aws.LambdaOptions{
 		InvocationType: &invocationType,
-		Payload:        ExampleFunctionPayload{ShouldFail: false, Echo: "hi!"},
+		Payload:        function.Event{Code: 123, Message: "hi!"},
 	}
 	out, err = aws.InvokeFunctionWithParamsE(t, awsRegion, functionName, input)
 	require.NotNil(t, err)
 	assert.Contains(t, err.Error(), "LambdaOptions.InvocationType, if specified, must either be \"RequestResponse\" or \"DryRun\"")
-}
-
-type ExampleFunctionPayload struct {
-	Echo       string
-	ShouldFail bool
 }

@@ -3,6 +3,12 @@ module lambda.demo
 go 1.17
 
 require (
+	github.com/gruntwork-io/terratest v0.37.12
+	github.com/pinger/go-multicloud-deploy/src/function/v2 v2.0.0-20211006061831-4e6aa272cf32
+	github.com/stretchr/testify v1.4.0
+)
+
+require (
 	cloud.google.com/go v0.51.0 // indirect
 	github.com/agext/levenshtein v1.2.1 // indirect
 	github.com/apparentlymart/go-textseg v1.0.0 // indirect
@@ -21,7 +27,6 @@ require (
 	github.com/google/uuid v1.1.1 // indirect
 	github.com/googleapis/gnostic v0.4.1 // indirect
 	github.com/gruntwork-io/go-commons v0.8.0 // indirect
-	github.com/gruntwork-io/terratest v0.37.12 // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.0 // indirect
 	github.com/hashicorp/go-version v1.3.0 // indirect
@@ -41,7 +46,6 @@ require (
 	github.com/russross/blackfriday/v2 v2.0.1 // indirect
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.4.0 // indirect
 	github.com/urfave/cli v1.22.2 // indirect
 	github.com/zclconf/go-cty v1.2.1 // indirect
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect

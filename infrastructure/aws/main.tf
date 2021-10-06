@@ -16,10 +16,20 @@ terraform {
 provider "archive" {
 }
 
+resource "null_resource" "build" {
+  provisioner "local-exec" {
+    command = "./build.sh"
+    working_dir = "../../src/aws"
+  }
+}
+
 data "archive_file" "zip" {
   type        = "zip"
-  source_dir  = "../../src"
-  output_path = "../../${var.function_name}.zip"
+  source_dir  = "../../src/bin/"
+  output_path = "../../src/${var.function_name}.zip"
+  depends_on = [
+    null_resource.build,
+  ]
 }
 
 resource "aws_lambda_function" "lambda" {
@@ -27,7 +37,7 @@ resource "aws_lambda_function" "lambda" {
   source_code_hash = data.archive_file.zip.output_base64sha256
   function_name    = var.function_name
   role             = aws_iam_role.lambda.arn
-  handler          = "lambda"
+  handler          = "main"
   runtime          = "go1.x"
 }
 
