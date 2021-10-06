@@ -1,1 +1,1 @@
-module github.com/pinger/go-multicloud-deploy/src/function
+module github.com/pinger/go-multicloud-deploy/src/function/v2
