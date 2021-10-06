@@ -1,10 +1,10 @@
 package function
 
 type Event struct {
-	Message string
-	Code    int
+	Message string `json:"message"`
+	Code    int    `json:"code"`
 }
 
-func GetEvent() Event {
-	return Event{Message: "This is an event...", Code: 9000}
+func GetEvent(str string) Event {
+	return Event{Message: "This is an event... " + str, Code: 9000}
 }
