@@ -3,7 +3,7 @@
 cd src/aws/
 ./build.sh
 
-cd ../../tests/aws/
+cd ../../tests/common/
 go mod tidy
 go test -v -timeout 30m
 
