@@ -4,7 +4,6 @@ package p
 import (
 	"encoding/json"
 	"fmt"
-	"html"
 	"io"
 	"log"
 	"net/http"
@@ -33,5 +32,10 @@ func EndPoint01(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Hello World!")
 		return
 	}
-	fmt.Fprint(w, html.EscapeString(function.GetEvent(d.Message).Message))
+
+	// all good. write our message.
+	j, _ := json.Marshal(d)
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Write([]byte(string(j)))
 }

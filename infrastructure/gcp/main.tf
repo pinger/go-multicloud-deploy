@@ -3,7 +3,7 @@
 # See test/terraform_aws_lambda_example_test.go for how to write automated tests for this code.
 # ---------------------------------------------------------------------------------------------------------------------
 provider "google" {
-  region = var.region
+  region  = var.region
   project = var.project
 }
 
@@ -16,6 +16,13 @@ terraform {
 
 provider "archive" {
 }
+resource "random_pet" "function_name" {
+  length    = 2
+  separator = "-"
+}
+
+provider "random" {
+}
 
 data "archive_file" "zip" {
   type        = "zip"
@@ -24,7 +31,7 @@ data "archive_file" "zip" {
 }
 
 resource "google_storage_bucket" "bucket" {
-  name    = "${var.project}-my-new-bucket"
+  name = "${var.project}-${random_pet.function_name.id}"
 }
 
 # Add source code zip to bucket
@@ -37,28 +44,28 @@ resource "google_storage_bucket_object" "bucket_object" {
 
 # Enable Cloud Functions API
 resource "google_project_service" "cf" {
-  service = "cloudfunctions.googleapis.com"
+  service                    = "cloudfunctions.googleapis.com"
   disable_dependent_services = true
   disable_on_destroy         = false
 }
 
 # Enable Cloud Build API
 resource "google_project_service" "cb" {
-  service = "cloudbuild.googleapis.com"
+  service                    = "cloudbuild.googleapis.com"
   disable_dependent_services = true
   disable_on_destroy         = false
 }
 
 # Enable Service Usage API
 resource "google_project_service" "su" {
-  service = "serviceusage.googleapis.com"
+  service                    = "serviceusage.googleapis.com"
   disable_dependent_services = true
   disable_on_destroy         = false
 }
 
 # Cloud Resource Manager API
 resource "google_project_service" "cr" {
-  service = "cloudresourcemanager.googleapis.com"
+  service                    = "cloudresourcemanager.googleapis.com"
   disable_dependent_services = true
   disable_on_destroy         = false
 }
